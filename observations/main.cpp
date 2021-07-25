@@ -84,10 +84,9 @@ int main()
 
     spInputObs = fopen("/Users/Charles/Desktop/analyses/input_obs.txt", "r");
 
-    spOutputObs = fopen("Users/Charles/Desktop/analyses/output_observations", "w");
+    spOutputObs = fopen("/Users/Charles/Desktop/analyses/output_observations.txt", "w");
     
-    printf("just opened needed input and output files??\n\n");
-    
+ //   spOutputObs = fopen("/Users/Charles/Desktop/analyses/apogee_perigee_output.txt", "w");
     char line[SATELLITE_LENGTH];
     
     Observation satellites[500];  // structure of 500 lines?
@@ -107,7 +106,9 @@ int main()
     
  //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);
     
-  //  fprintf(spOutputObs, "satno %s\t telescope %s\t number of obs %d\n", Observation.satnumber, Observation.telescope, Observation.number_observations);
+   // fprintf(spOutputObs, "line number", i);
+    
+  //  fprintf(spOutputObs, "satno %d\t telescope %s\t number of obs %d\n", i);
     
     /*  original code
     for(int j = 0; j < numSats; j++) fprintf(spOutput, "record %d\t satno %d\t epochyr %d\t epochday %f\t inclin %f\t perigee: %f\t apogee: %f\n", j, sattellites[j].satnumber, sattellites[j].epoch_year, sattellites[j].epoch_day, sattellites[j].inclination, sattellites[j].perigee, sattellites[j].apogee);
