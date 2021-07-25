@@ -53,6 +53,7 @@ public:
        
        // scan observation line
         sscanf(line, "%s %s %d", &satnumber, &telescope, &number_observations);
+     
         
     }  // end Observation definition
     
@@ -77,7 +78,6 @@ int compareObservationsSatelliteNumber(const void * a, const void * b) // sort s
 
 int main()
 {
-    
     FILE* spInputObs;  // a file of all the observations
     
     FILE* spOutputObs; // output points to file to write calculate results to
@@ -89,20 +89,24 @@ int main()
  //   spOutputObs = fopen("/Users/Charles/Desktop/analyses/apogee_perigee_output.txt", "w");
     char line[SATELLITE_LENGTH];
     
-    Observation satellites[500];  // structure of 500 lines?
+    Observation satellites[500];  // structure named satellites of 500 lines?
     
     int i = 0;
     while (feof(spInputObs) == 0) // read in all observations
     {
         fgets(line, sizeof(line), spInputObs);  // get first line of observations
         printf("the line: %s", line);  // debug
+     //   printf("satnumber\t", &Observation::satnumber);
         
         satellites[i] = Observation(line); //
-        // printf("test", sattellites[0].satnumber);  // how to point at satnumber?
-        // need to look for satnumber here and print to files
+
         i++;   // increment i
         
     }  // end of while loop, reads observations
+
+    int numObs = i;
+    
+    qsort(&satellites[0], i, sizeof(Observation), compareObservationsSatelliteNumber);
     
  //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);
     
@@ -110,11 +114,11 @@ int main()
     
   //  fprintf(spOutputObs, "satno %d\t telescope %s\t number of obs %d\n", i);
     
-    /*  original code
-    for(int j = 0; j < numSats; j++) fprintf(spOutput, "record %d\t satno %d\t epochyr %d\t epochday %f\t inclin %f\t perigee: %f\t apogee: %f\n", j, sattellites[j].satnumber, sattellites[j].epoch_year, sattellites[j].epoch_day, sattellites[j].inclination, sattellites[j].perigee, sattellites[j].apogee);
+    for(int i = 0; i < numObs; i++)
+//        fprintf(spOutputObs, "record %d\t satno %c\t telescope %s\t number observations\n", i, satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
+        fprintf(spOutputObs, "the line: %c\n", satellites[i].satnumber);
+    
     // prints record number (j), sat number, and inclination
-  
-     */
         
     fclose(spInputObs);
     fclose(spOutputObs);
