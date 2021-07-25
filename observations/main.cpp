@@ -21,7 +21,7 @@ class Observation  // this is what is in each observation line
 {
 public:
     // three fields: satellite number, telescope, # obs
-    char line[SATELLITE_LENGTH];  // this is a observation line
+    char line[SATELLITE_LENGTH];  // this is an observation line
     char satnumber ;
     char telescope[10];
     int number_observations ;
@@ -51,21 +51,15 @@ public:
     {
         strncpy(line, event, sizeof(line));
        
-        int linenum;
        // scan observation line
-        sscanf( line, "%d %s %s %4d",
-               &linenum,
-               &satnumber,
-               &telescope, &number_observations);
-
         sscanf(line, "%s %s %d", &satnumber, &telescope, &number_observations);
         
     }  // end Observation definition
     
-   void print(FILE* spOutput)  // print to output file for parameters
+   void print(FILE* spOutputObs)  // print to output file for parameters
     { //if no file given prints to stdout (i.e. terminal)
-        fprintf(spOutput, "Satno %c\n", satnumber);
-        fprintf(spOutput, "Observations: %d\n", number_observations );
+        fprintf(spOutputObs, "Satno %c\n", satnumber);
+        fprintf(spOutputObs, "Observations: %d\n", number_observations );
       
         //        fprintf(stdout, "", );
     }  // end of print function - need this later?
@@ -86,34 +80,34 @@ int main()
     
     FILE* spInputObs;  // a file of all the observations
     
-    FILE* spOutput = nullptr; // output points to file to write calculate results to
-    
-   // spInputTLE = fopen(“~/Desktop/analyses/input_tle.txt", "r");
-  //  spOutput = fopen(“~/Desktop/analyses/selected_satellite.txt", "w”);
+    FILE* spOutputObs; // output points to file to write calculate results to
 
     spInputObs = fopen("/Users/Charles/Desktop/analyses/input_obs.txt", "r");
-   // each case has a unique spOutput
-   
-    char name_card[SATELLITE_LENGTH];
+
+    spOutputObs = fopen("Users/Charles/Desktop/analyses/output_observations", "r");
+    
+    printf("just opened needed input and output files??\n\n");
+    
+    char line[SATELLITE_LENGTH];
     
     Observation satellites[500];  // structure of 500 lines?
-   // printf("sat number\n", &sattellites[0].satnumber); // can access fields?
-    
-  //  spInputTLE = fopen("tle_cards.txt", "r");  // read data from marston
-  //  spOutput = fopen("tle_output.txt", "w");  // put satellite in marston
     
     int i = 0;
-    while (feof(spInputObs) == 0) // read in all three cards
+    while (feof(spInputObs) == 0) // read in all observations
     {
-        fgets(name_card, sizeof(name_card), spInputObs);  // get first line of TLE
+        fgets(line, sizeof(line), spInputObs);  // get first line of observations
+        printf("the line: %s", line);  // debug
         
-        satellites[i] = Observation(name_card); //
+        satellites[i] = Observation(line); //
         // printf("test", sattellites[0].satnumber);  // how to point at satnumber?
         // need to look for satnumber here and print to files
         i++;   // increment i
         
     }  // end of while loop, reads observations
     
+ //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);
+    
+  //  fprintf(spOutputObs, "satno %s\t telescope %s\t number of obs %d\n", Observation.satnumber, Observation.telescope, Observation.number_observations);
     
     /*  original code
     for(int j = 0; j < numSats; j++) fprintf(spOutput, "record %d\t satno %d\t epochyr %d\t epochday %f\t inclin %f\t perigee: %f\t apogee: %f\n", j, sattellites[j].satnumber, sattellites[j].epoch_year, sattellites[j].epoch_day, sattellites[j].inclination, sattellites[j].perigee, sattellites[j].apogee);
@@ -122,7 +116,7 @@ int main()
      */
         
     fclose(spInputObs);
-    fclose(spOutput);
+    fclose(spOutputObs);
     // close all inputs and outputs, did not have that before
 
     }  // end of main
