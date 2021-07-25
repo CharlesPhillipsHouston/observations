@@ -84,7 +84,7 @@ int main()
 
     spInputObs = fopen("/Users/Charles/Desktop/analyses/input_obs.txt", "r");
 
-    spOutputObs = fopen("Users/Charles/Desktop/analyses/output_observations", "r");
+    spOutputObs = fopen("Users/Charles/Desktop/analyses/output_observations", "w");
     
     printf("just opened needed input and output files??\n\n");
     
