@@ -22,7 +22,7 @@ class Observation  // this is what is in each observation line
 public:
     // three fields: satellite number, telescope, # obs
     char line[SATELLITE_LENGTH];  // this is an observation line
-    char satnumber ;
+    char satnumber[9];
     char telescope[10];
     int number_observations ;
     
@@ -47,19 +47,18 @@ public:
    */
     
     Observation(){}; // empty constructor
-    Observation(char *event)  // fill in observation structure - event is one observation
+    Observation(char *ob_line)  // fill in observation structure - event is one observation
     {
-        strncpy(line, event, sizeof(line));
+        strncpy(satnumber, line, sizeof(satnumber));
        
        // scan observation line
         sscanf(line, "%s %s %d", &satnumber, &telescope, &number_observations);
      
-        
     }  // end Observation definition
     
    void print(FILE* spOutputObs)  // print to output file for parameters
     { //if no file given prints to stdout (i.e. terminal)
-        fprintf(spOutputObs, "Satno %c\n", satnumber);
+        fprintf(spOutputObs, "Satno %s\n", satnumber);
         fprintf(spOutputObs, "Observations: %d\n", number_observations );
       
         //        fprintf(stdout, "", );
@@ -89,14 +88,14 @@ int main()
  //   spOutputObs = fopen("/Users/Charles/Desktop/analyses/apogee_perigee_output.txt", "w");
     char line[SATELLITE_LENGTH];
     
-    Observation satellites[500];  // structure named satellites of 500 lines?
+    Observation satellites[500];  // fill structure named satellites of 500 lines?
     
     int i = 0;
     while (feof(spInputObs) == 0) // read in all observations
     {
         fgets(line, sizeof(line), spInputObs);  // get first line of observations
         printf("the line: %s", line);  // debug
-     //   printf("satnumber\t", &Observation::satnumber);
+      //  printf("satnumber\t", satnumber);
         
         satellites[i] = Observation(line); //
 
@@ -106,9 +105,9 @@ int main()
 
     int numObs = i;
     
-    qsort(&satellites[0], i, sizeof(Observation), compareObservationsSatelliteNumber);
+    qsort(&satellites[0], i, sizeof(satellites), compareObservationsSatelliteNumber);
     
- //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);
+ //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);.
     
    // fprintf(spOutputObs, "line number", i);
     
@@ -116,7 +115,7 @@ int main()
     
     for(int i = 0; i < numObs; i++)
 //        fprintf(spOutputObs, "record %d\t satno %c\t telescope %s\t number observations\n", i, satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
-        fprintf(spOutputObs, "the line: %c\n", satellites[i].satnumber);
+  //      fprintf(spOutputObs, "the line: %s\n", satellites[i].satnumber);
     
     // prints record number (j), sat number, and inclination
         
