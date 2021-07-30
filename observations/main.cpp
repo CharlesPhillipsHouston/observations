@@ -72,9 +72,8 @@ public:
     { //if no file given prints to stdout (i.e. terminal)
         fprintf(spOutputObs, "Satno %s\n", satnumber);
         fprintf(spOutputObs, "Observations: %d\n", number_observations );
-      
         //        fprintf(stdout, "", );
-    }  // end of print function - need this later?
+    }  // end of print function
     
     
 }; // odd to see } then ; end of Tle thing
@@ -117,8 +116,7 @@ int main()
     qsort(&satellites[0], numObs, sizeof(Observation), compareObservationsSatelliteNumber);
     
     for(int i = 0; i < numObs; i++)
-        fprintf(spOutputObs, "record %d\t satno %s\t telescope %s\t number observations %d\n", i, satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
-//        fprintf(spOutputObs, "the line: %s\n", satellites[i].line);
+        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
     
     fclose(spInputObs);
     fclose(spOutputObs);
