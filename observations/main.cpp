@@ -1,7 +1,7 @@
 /* standard stuff
- as of 24 jul 2021
+ as of 30 jul 2021
 written to count up observations and sort by satellite number
- now runs in Terminal and asks which parameter to sort by
+Mike fixed this version
  */
 
 #include <stdio.h>
@@ -49,7 +49,8 @@ public:
     Observation(){}; // empty constructor
     Observation(char *ob_line)  // fill in observation structure - event is one observation
     {
-        strncpy(satnumber, line, sizeof(satnumber));
+        strncpy(line, ob_line, sizeof(line));
+        //strncpy(satnumber, line, sizeof(satnumber));
        
        // scan observation line
         sscanf(line, "%s %s %d", &satnumber, &telescope, &number_observations);
@@ -69,21 +70,24 @@ public:
  
 int compareObservationsSatelliteNumber(const void * a, const void * b) // sort satellite number
 {
-    if (((Observation*)a)->satnumber  < ((Observation*)b)->satnumber) return -1;
-    if (((Observation*)a)->satnumber == ((Observation*)b)->satnumber) return  0;
-    if (((Observation*)a)->satnumber  > ((Observation*)b)->satnumber) return  1;
-    return 0; //gets rid of compiler warning, should never get here
+//    if (((Observation*)a)->satnumber  < ((Observation*)b)->satnumber) return -1;
+//    if (((Observation*)a)->satnumber == ((Observation*)b)->satnumber) return  0;
+//    if (((Observation*)a)->satnumber  > ((Observation*)b)->satnumber) return  1;
+/** MSM - satnumber is an array of char's  NOT a number so < and > aren't really valid.  need to use strcmp instead **/
+    return strcmp((const char*)(((Observation*)a)->satnumber), (const char*)(((Observation*)b)->satnumber));
 }
 
 int main()
 {
-    FILE* spInputObs;  // a file of all the observations
+    FILE * spInputObs;  // a file of all the observations
     
     FILE* spOutputObs; // output points to file to write calculate results to
 
-    spInputObs = fopen("/Users/Charles/Desktop/analyses/input_obs.txt", "r");
+  //  /Users/charlesphillips/Desktop/analyses/input_obs.txt
+    
+    spInputObs = fopen("/Users/charlesphillips/Desktop/analyses/input_obs.txt", "r");
 
-    spOutputObs = fopen("/Users/Charles/Desktop/analyses/output_observations.txt", "w");
+    spOutputObs = fopen("/Users/charlesphillips/Desktop/analyses/output_observations.txt", "w");
     
  //   spOutputObs = fopen("/Users/Charles/Desktop/analyses/apogee_perigee_output.txt", "w");
     char line[SATELLITE_LENGTH];
@@ -104,8 +108,8 @@ int main()
     }  // end of while loop, reads observations
 
     int numObs = i;
-    
-    qsort(&satellites[0], i, sizeof(satellites), compareObservationsSatelliteNumber);
+    qsort(&satellites[0], i, sizeof(Observation), compareObservationsSatelliteNumber);
+    //qsort(&satellites[0], i, sizeof(satellites), compareObservationsSatelliteNumber);
     
  //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);.
     
@@ -114,7 +118,7 @@ int main()
   //  fprintf(spOutputObs, "satno %d\t telescope %s\t number of obs %d\n", i);
     
     for(int i = 0; i < numObs; i++)
-//        fprintf(spOutputObs, "record %d\t satno %c\t telescope %s\t number observations\n", i, satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
+        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
   //      fprintf(spOutputObs, "the line: %s\n", satellites[i].satnumber);
     
     // prints record number (j), sat number, and inclination
@@ -124,4 +128,3 @@ int main()
     // close all inputs and outputs, did not have that before
 
     }  // end of main
-
