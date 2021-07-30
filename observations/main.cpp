@@ -9,6 +9,7 @@ Mike fixed this version
 #include <string.h> // strtok, strcpy stuff not even used yet
 #include <stdlib.h> // atoi, atof not used yet
 #include <math.h>  // math functions
+#include <wordexp.h>
 
 #include <fstream>  // moving towards better C++ file handling
 // does NOT like fstream.h!!
@@ -16,6 +17,16 @@ Mike fixed this version
 #define SATELLITE_LENGTH 30  // length of each line of satellite report
 
 using namespace std;
+
+FILE* fileOpen(const char* filename, const char* openmode)
+{
+    wordexp_t expandedName;
+    FILE* fileHandle; // output points to file to write calculate results to
+    wordexp(filename, &expandedName, 0);
+    fileHandle = fopen(expandedName.we_wordv[0], openmode);
+    wordfree(&expandedName);
+    return fileHandle;
+}  // this apparently lets ~/ work
 
 class Observation  // this is what is in each observation line
 {
@@ -79,17 +90,12 @@ int compareObservationsSatelliteNumber(const void * a, const void * b) // sort s
 
 int main()
 {
-    FILE * spInputObs;  // a file of all the observations
-    
+    FILE* spInputObs;  // a file of all the observations
     FILE* spOutputObs; // output points to file to write calculate results to
-
-  //  /Users/charlesphillips/Desktop/analyses/input_obs.txt
+ 
+    spInputObs = fileOpen("~/Dropbox/Projects/Charles/input_obs.txt", "r");
+    spOutputObs = fileOpen("~/Dropbox/Projects/Charles/output_observations.txt", "w");
     
-    spInputObs = fopen("/Users/charlesphillips/Desktop/analyses/input_obs.txt", "r");
-
-    spOutputObs = fopen("/Users/charlesphillips/Desktop/analyses/output_observations.txt", "w");
-    
- //   spOutputObs = fopen("/Users/Charles/Desktop/analyses/apogee_perigee_output.txt", "w");
     char line[SATELLITE_LENGTH];
     
     Observation satellites[500];  // fill structure named satellites of 500 lines?
@@ -99,30 +105,21 @@ int main()
     {
         fgets(line, sizeof(line), spInputObs);  // get first line of observations
         printf("the line: %s", line);  // debug
-      //  printf("satnumber\t", satnumber);
         
         satellites[i] = Observation(line); //
+          //printf("satnumber %s\t", satellites[i].satnumber);
 
         i++;   // increment i
         
     }  // end of while loop, reads observations
 
     int numObs = i;
-    qsort(&satellites[0], i, sizeof(Observation), compareObservationsSatelliteNumber);
-    //qsort(&satellites[0], i, sizeof(satellites), compareObservationsSatelliteNumber);
-    
- //   qsort(&line[0], i, sizeof(line), compareObservationsSatelliteNumber);.
-    
-   // fprintf(spOutputObs, "line number", i);
-    
-  //  fprintf(spOutputObs, "satno %d\t telescope %s\t number of obs %d\n", i);
+    qsort(&satellites[0], numObs, sizeof(Observation), compareObservationsSatelliteNumber);
     
     for(int i = 0; i < numObs; i++)
-        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
-  //      fprintf(spOutputObs, "the line: %s\n", satellites[i].satnumber);
+        fprintf(spOutputObs, "record %d\t satno %s\t telescope %s\t number observations %d\n", i, satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
+//        fprintf(spOutputObs, "the line: %s\n", satellites[i].line);
     
-    // prints record number (j), sat number, and inclination
-        
     fclose(spInputObs);
     fclose(spOutputObs);
     // close all inputs and outputs, did not have that before
