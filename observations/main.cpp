@@ -1,6 +1,7 @@
 /* standard stuff
- as of 30 jul 2021
-written to count up observations and sort by satellite number
+ as of 2 aug 2021
+written to count up images and sort by satellite number
+ the files they gave me actually tell me how many photos they took, not all got observations
 Mike fixed this version
  */
 
