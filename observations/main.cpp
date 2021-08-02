@@ -35,7 +35,7 @@ public:
     char line[SATELLITE_LENGTH];  // this is an observation line
     char satnumber[9];
     char telescope[10];
-    int number_observations ;
+    int images;
     
   /*  float tleStrToFloat(char * in)  // need this for anything? sense text in file?
     {
@@ -64,14 +64,14 @@ public:
         //strncpy(satnumber, line, sizeof(satnumber));
        
        // scan observation line
-        sscanf(line, "%s %s %d", &satnumber, &telescope, &number_observations);
+        sscanf(line, "%s %s %d", &satnumber, &telescope, &images);
      
     }  // end Observation definition
     
    void print(FILE* spOutputObs)  // print to output file for parameters
     { //if no file given prints to stdout (i.e. terminal)
         fprintf(spOutputObs, "Satno %s\n", satnumber);
-        fprintf(spOutputObs, "Observations: %d\n", number_observations );
+        fprintf(spOutputObs, "Images: %d\n", images);
         //        fprintf(stdout, "", );
     }  // end of print function
     
@@ -116,7 +116,7 @@ int main()
     qsort(&satellites[0], numObs, sizeof(Observation), compareObservationsSatelliteNumber);
     
     for(int i = 0; i < numObs; i++)
-        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].number_observations);
+        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].images);
     
     fclose(spInputObs);
     fclose(spOutputObs);
