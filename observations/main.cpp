@@ -95,9 +95,10 @@ int main()
     FILE* spInputObs;  // a file of all the observations
     FILE* spOutputObs; // output points to file to write calculate results to
  
-    spInputObs = fileOpen("~/Dropbox/Projects/Charles/input_obs.txt", "r");
-    spOutputObs = fileOpen("~/Dropbox/Projects/Charles/output_images_obtained.txt", "w");
+    spInputObs = fileOpen("/Users/Charles/Desktop/analyses/input_obs.txt", "r");
+    spOutputObs = fileOpen("/Users/Charles/Desktop/analyses/output_images_obtained.txt", "w");
     
+   // /Users/Charles/Desktop/analyses/input_obs.txt
     char line[SATELLITE_LENGTH];
     
     Observation satellites[500];  // fill structure named satellites of 500 lines?
@@ -107,19 +108,22 @@ int main()
     {
         fgets(line, sizeof(line), spInputObs);  // get first line of observations
         printf("the line: %s", line);  // debug
-        
+     
         satellites[i] = Observation(line); //
           //printf("satnumber %s\t", satellites[i].satnumber);
 
         i++;   // increment i
-        
+          
     }  // end of while loop, reads observations
-
+ printf("\n");
+    
     int numObs = i;
     qsort(&satellites[0], numObs, sizeof(Observation), compareObservationsSatelliteNumber);
     
+      fprintf(spOutputObs, "Satno \t Telescope \t Number Images \n");
+    
     for(int i = 0; i < numObs; i++)
-        fprintf(spOutputObs, "satno %s\t telescope %s\t number observations %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].images);
+        fprintf(spOutputObs, "%s\t %s\t %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].images);
     
     fclose(spInputObs);
     fclose(spOutputObs);
