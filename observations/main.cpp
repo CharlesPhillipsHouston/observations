@@ -1,7 +1,8 @@
 /* standard stuff
- as of 2 aug 2021
+ as of 3 aug 2021
 written to count up images and sort by satellite number
  the files they gave me actually tell me how many photos they took, not all got observations
+ better output, columns have labels
 Mike fixed this version
  */
 
@@ -71,8 +72,9 @@ public:
     
    void print(FILE* spOutputObs)  // print to output file for parameters
     { //if no file given prints to stdout (i.e. terminal)
-        fprintf(spOutputObs, "Satno %s\n", satnumber);
-        fprintf(spOutputObs, "Images: %d\n", images);
+        fprintf(spOutputObs, "Satno \t Images \n");
+        fprintf(spOutputObs, "%s\n", satnumber);
+        fprintf(spOutputObs, "%d\n", images);
         //        fprintf(stdout, "", );
     }  // end of print function
     
@@ -94,7 +96,7 @@ int main()
     FILE* spOutputObs; // output points to file to write calculate results to
  
     spInputObs = fileOpen("~/Dropbox/Projects/Charles/input_obs.txt", "r");
-    spOutputObs = fileOpen("~/Dropbox/Projects/Charles/output_observations.txt", "w");
+    spOutputObs = fileOpen("~/Dropbox/Projects/Charles/output_images_obtained.txt", "w");
     
     char line[SATELLITE_LENGTH];
     
