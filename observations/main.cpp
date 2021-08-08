@@ -1,5 +1,5 @@
 /* standard stuff
- as of 3 aug 2021
+ as of 7 aug 2021
 written to count up images and sort by satellite number
  the files they gave me actually tell me how many photos they took, not all got observations
  better output, columns have labels
