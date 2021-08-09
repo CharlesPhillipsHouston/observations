@@ -122,10 +122,10 @@ int main()
     
       fprintf(spOutputObs, "Satno \t Telescope \t Number Images \n");
     
-    fprintf(spOutputObs, "21775, USA 71, NOSS"); // typical satellite tracked
-          fprintf(spOutputObs, "23097, USA 103, Trumpet 1"); // typical satellite tracked
-        fprintf(spOutputObs, "23609, USA 112, Trumpet 2"); // typical satellite tracked
-     fprintf(spOutputObs, "25034, Trumpet 3"); // typical satellite tracked
+    fprintf(spOutputObs, "21775, USA 71, NOSS\n"); // typical satellite tracked
+          fprintf(spOutputObs, "23097, USA 103, Trumpet 1\n"); // typical satellite tracked
+        fprintf(spOutputObs, "23609, USA 112, Trumpet 2\n"); // typical satellite tracked
+     fprintf(spOutputObs, "25034, Trumpet 3\n"); // typical satellite tracked
     
     for(int i = 0; i < numObs; i++)
         fprintf(spOutputObs, "%s\t %s\t %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].images);
