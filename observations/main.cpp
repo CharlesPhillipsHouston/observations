@@ -1,5 +1,5 @@
 /* standard stuff
- as of 7 aug 2021
+ as of 18 oct 2021
 written to count up images and sort by satellite number
  the files they gave me actually tell me how many photos they took, not all got observations
  better output, columns have labels
@@ -79,7 +79,7 @@ public:
     }  // end of print function
     
     
-}; // odd to see } then ; end of Tle thing
+}; // odd to see } then ; end of Observation thing
  
 int compareObservationsSatelliteNumber(const void * a, const void * b) // sort satellite number
 {
@@ -126,6 +126,8 @@ int main()
           fprintf(spOutputObs, "23097, USA 103, Trumpet 1\n"); // typical satellite tracked
         fprintf(spOutputObs, "23609, USA 112, Trumpet 2\n"); // typical satellite tracked
      fprintf(spOutputObs, "25034, Trumpet 3\n"); // typical satellite tracked
+    fprintf(spOutputObs, "29249, USA 184\n"); // typical satellite tracked
+    fprintf(spOutputObs, "42941, USA 278\n"); // typical satellite tracked
     
     for(int i = 0; i < numObs; i++)
         fprintf(spOutputObs, "%s\t %s\t %d\n", satellites[i].satnumber, satellites[i].telescope, satellites[i].images);
